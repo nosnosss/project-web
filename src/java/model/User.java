@@ -7,6 +7,25 @@ public class User {
     private String email;
     private String role;
     private boolean locked;
+    
+
+    public User() {}
+
+    public User(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = "member";
+        this.locked = false;
+    }
+
+    public User(String username, String password, String email, String role, boolean locked) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.locked = locked;
+    }
 
     // Getters and Setters
 
