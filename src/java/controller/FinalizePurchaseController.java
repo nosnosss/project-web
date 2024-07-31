@@ -9,9 +9,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.Orders;
 
 import java.io.IOException;
+import java.sql.Date;
 
-@WebServlet("/PurchaseController")
-public class PurchaseController extends HttpServlet {
+@WebServlet("/finalizePurchase")
+public class FinalizePurchaseController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private OrdersDAO ordersDAO;
 
@@ -29,17 +30,17 @@ public class PurchaseController extends HttpServlet {
         int quantity = Integer.parseInt(request.getParameter("quantity"));
         String paymentMethod = request.getParameter("paymentMethod");
 
-        // Assume user is logged in and user ID is available in session
         int userId = (int) request.getSession().getAttribute("userId");
 
         Orders order = new Orders();
         order.setUserId(userId);
-        order.setStatus("pending");
         order.setPrice(productPrice);
         order.setQuantity(quantity);
         order.setTotalAmount(productPrice * quantity);
+        order.setStatus("pending");
         order.setPaymentStatus("pending");
         order.setPaymentMethod(paymentMethod);
+        order.setTime(new Date(System.currentTimeMillis()));
 
         ordersDAO.saveOrder(order);
 
