@@ -9,9 +9,9 @@ public class OrderItem {
     private int productId;
     private int quantity;
     private BigDecimal price;
-    private Timestamp time;
+    private String productName; // Thêm thuộc tính này
 
-    // Getters and Setters
+    // Getters và Setters
     public int getId() {
         return id;
     }
@@ -42,10 +42,10 @@ public class OrderItem {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
-    public Timestamp getTime() {
-        return time;
+    public String getProductName() {
+        return productName;
     }
-    public void setTime(Timestamp time) {
-        this.time = time;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 }

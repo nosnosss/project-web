@@ -26,7 +26,6 @@ public class ProfileServlet extends HttpServlet {
         Integer userId = (Integer) session.getAttribute("userId");
 
         if (userId == null) {
-            // Nếu userId không tồn tại, chuyển hướng đến trang đăng nhập hoặc thông báo lỗi
             response.sendRedirect("login.jsp");
             return;
         }
@@ -36,7 +35,6 @@ public class ProfileServlet extends HttpServlet {
             request.setAttribute("profile", profile);
             request.getRequestDispatcher("profile.jsp").forward(request, response);
         } else {
-            // Nếu không tìm thấy hồ sơ người dùng, có thể chuyển hướng đến trang lỗi hoặc thông báo lỗi
             response.sendRedirect("error.jsp");
         }
     }
@@ -48,7 +46,6 @@ public class ProfileServlet extends HttpServlet {
         Integer userId = (Integer) session.getAttribute("userId");
 
         if (userId == null) {
-            // Nếu userId không tồn tại, chuyển hướng đến trang đăng nhập hoặc thông báo lỗi
             response.sendRedirect("login.jsp");
             return;
         }
@@ -65,10 +62,12 @@ public class ProfileServlet extends HttpServlet {
 
         boolean updateSuccess = profileService.updateProfile(profile);
         if (updateSuccess) {
-            response.sendRedirect("ProfileServlet");
+            // Cập nhật thành công, chuyển hướng đến trang chính (home)
+            response.sendRedirect("home.jsp");
         } else {
-            // Nếu cập nhật không thành công, có thể chuyển hướng đến trang lỗi hoặc thông báo lỗi
+            // Cập nhật thất bại, hiển thị thông báo lỗi trên cùng trang
             request.setAttribute("updateSuccess", false);
+            request.setAttribute("profile", profile);
             request.getRequestDispatcher("profile.jsp").forward(request, response);
         }
     }

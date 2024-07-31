@@ -28,46 +28,57 @@ public class OrderServlet extends HttpServlet {
         Object userIdObj = request.getSession().getAttribute("userId");
         
         if (userIdObj == null) {
-            response.sendRedirect("login.jsp"); // Redirect to login if userId is not found in session
+            response.sendRedirect("login.jsp");
             return;
         }
         
         int userId = Integer.parseInt(userIdObj.toString());
 
-        switch (action) {
-            case "viewOrders":
-                List<Order> orders = orderService.getOrdersByUserId(userId);
-                request.setAttribute("orders", orders);
-                request.getRequestDispatcher("orders.jsp").forward(request, response);
-                break;
-            case "filterOrders":
-                Date fromDate = Date.valueOf(request.getParameter("fromDate"));
-                Date toDate = Date.valueOf(request.getParameter("toDate"));
-                List<Order> filteredOrders = orderService.getOrdersByDateRange(userId, fromDate, toDate);
-                request.setAttribute("orders", filteredOrders);
-                request.getRequestDispatcher("orders.jsp").forward(request, response);
-                break;
-            case "cancelOrder":
-                int orderId = Integer.parseInt(request.getParameter("orderId"));
-                boolean canceled = orderService.cancelOrder(orderId);
-                request.setAttribute("cancelSuccess", canceled);
-                response.sendRedirect("OrderServlet?action=viewOrders");
-                break;
-            case "reorder":
-                int reorderId = Integer.parseInt(request.getParameter("orderId"));
-                boolean reordered = orderService.reorder(reorderId);
-                request.setAttribute("reorderSuccess", reordered);
-                response.sendRedirect("OrderServlet?action=viewOrders");
-                break;
-            case "viewOrderDetails":
-                int detailOrderId = Integer.parseInt(request.getParameter("orderId"));
-                List<OrderItem> orderItems = orderService.getOrderItemsByOrderId(detailOrderId);
-                request.setAttribute("orderItems", orderItems);
-                request.getRequestDispatcher("orderDetails.jsp").forward(request, response);
-                break;
-            default:
-                response.sendRedirect("error.jsp");
-                break;
+        try {
+            switch (action) {
+                case "viewOrders":
+                    List<Order> orders = orderService.getOrdersByUserId(userId);
+                    request.setAttribute("orders", orders);
+                    request.getRequestDispatcher("orders.jsp").forward(request, response);
+                    break;
+                case "filterOrders":
+                    Date fromDate = Date.valueOf(request.getParameter("fromDate"));
+                    Date toDate = Date.valueOf(request.getParameter("toDate"));
+                    List<Order> filteredOrders = orderService.getOrdersByDateRange(userId, fromDate, toDate);
+                    request.setAttribute("orders", filteredOrders);
+                    request.getRequestDispatcher("orders.jsp").forward(request, response);
+                    break;
+                case "cancelOrder":
+                    int orderId = Integer.parseInt(request.getParameter("orderId"));
+                    boolean canceled = orderService.cancelOrder(orderId);
+                    if (canceled) {
+                        response.sendRedirect("OrderServlet?action=viewOrders&message=cancelSuccess");
+                    } else {
+                        response.sendRedirect("OrderServlet?action=viewOrders&message=cancelFailed");
+                    }
+                    break;
+                case "reorder":
+                    int reorderId = Integer.parseInt(request.getParameter("orderId"));
+                    boolean reordered = orderService.reorder(reorderId);
+                    if (reordered) {
+                        response.sendRedirect("OrderServlet?action=viewOrders&message=reorderSuccess");
+                    } else {
+                        response.sendRedirect("OrderServlet?action=viewOrders&message=reorderFailed");
+                    }
+                    break;
+                case "viewOrderDetails":
+                    int detailOrderId = Integer.parseInt(request.getParameter("orderId"));
+                    List<OrderItem> orderItems = orderService.getOrderItemsByOrderId(detailOrderId);
+                    request.setAttribute("orderItems", orderItems);
+                    request.getRequestDispatcher("orderDetails.jsp").forward(request, response);
+                    break;
+                default:
+                    response.sendRedirect("error.jsp");
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("error.jsp");
         }
     }
 }

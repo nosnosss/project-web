@@ -79,28 +79,30 @@ public class OrderDAO {
     }
     
     public List<OrderItem> getOrderItemsByOrderId(int orderId) {
-        List<OrderItem> orderItems = new ArrayList<>();
-        String sql = "SELECT oi.id, oi.order_id, oi.product_id, oi.quantity, oi.price, p.name AS product_name "
-                   + "FROM Order_Items oi "
-                   + "JOIN Products p ON oi.product_id = p.id "
-                   + "WHERE oi.order_id = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, orderId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    OrderItem orderItem = new OrderItem();
-                    orderItem.setId(rs.getInt("id"));
-                    orderItem.setOrderId(rs.getInt("order_id"));
-                    orderItem.setProductId(rs.getInt("product_id"));
-                    orderItem.setQuantity(rs.getInt("quantity"));
-                    orderItem.setPrice(rs.getBigDecimal("price"));
-                    orderItems.add(orderItem);
-                }
+    List<OrderItem> orderItems = new ArrayList<>();
+    String sql = "SELECT oi.id, oi.order_id, oi.product_id, oi.quantity, oi.price, p.name AS product_name "
+               + "FROM Order_Items oi "
+               + "JOIN Products p ON oi.product_id = p.id "
+               + "WHERE oi.order_id = ?";
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setInt(1, orderId);
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                OrderItem orderItem = new OrderItem();
+                orderItem.setId(rs.getInt("id"));
+                orderItem.setOrderId(rs.getInt("order_id"));
+                orderItem.setProductId(rs.getInt("product_id"));
+                orderItem.setQuantity(rs.getInt("quantity"));
+                orderItem.setPrice(rs.getBigDecimal("price"));
+                orderItem.setProductName(rs.getString("product_name")); // Lấy tên sản phẩm từ bảng Products
+                orderItems.add(orderItem);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return orderItems;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return orderItems;
+}
+
 }

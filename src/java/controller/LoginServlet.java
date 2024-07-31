@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
 
         if (user != null) {
             HttpSession session = request.getSession();
-            session.setAttribute("user", user);
+            session.setAttribute("userId", user.getId()); // Lưu userId vào session
             response.sendRedirect("home.jsp");
         } else {
             request.setAttribute("errorMessage", "Invalid username or password. Please try again.");

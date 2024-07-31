@@ -23,7 +23,7 @@
             <c:forEach var="item" items="${orderItems}">
                 <tr>
                     <td>${item.productId}</td>
-                    <td>${item.productName}</td>
+                    <td>${item.productName}</td> <!-- Hiển thị tên sản phẩm -->
                     <td>${item.quantity}</td>
                     <td><fmt:formatNumber value="${item.price}" type="currency" /></td>
                     <td><fmt:formatNumber value="${item.quantity * item.price}" type="currency" /></td>

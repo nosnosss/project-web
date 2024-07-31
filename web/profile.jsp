@@ -7,6 +7,15 @@
 </head>
 <body>
     <h1>Profile</h1>
+
+    <c:if test="${not empty updateSuccess}">
+        <p style="color:green;">Profile updated successfully!</p>
+    </c:if>
+
+    <c:if test="${not empty updateSuccess && !updateSuccess}">
+        <p style="color:red;">Profile update failed. Please try again.</p>
+    </c:if>
+
     <form method="post" action="ProfileServlet">
         <label>Name: </label>
         <input type="text" name="name" value="${profile.name}" required><br>

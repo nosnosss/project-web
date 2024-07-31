@@ -13,7 +13,7 @@
         <h2>ABC Shop</h2>
         <div>
             <c:choose>
-                <c:when test="${sessionScope.user == null}">
+                <c:when test="${sessionScope.userId == null}">
                     <a href="login.jsp" class="btn btn-primary">Login</a>
                     <a href="register.jsp" class="btn btn-secondary">Register</a>
                 </c:when>
