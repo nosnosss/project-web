@@ -19,6 +19,8 @@
                 </c:when>
                 <c:otherwise>
                     <a href="logout" class="btn btn-danger">Logout</a>
+                    <a href="orders.jsp" class="btn btn-info">View Orders</a>
+                    <a href="profile.jsp" class="btn btn-warning">Update Profile</a>
                 </c:otherwise>
             </c:choose>
         </div>
@@ -44,7 +46,7 @@
                             <h5 class="card-title">${product.name}</h5>
                             <p class="card-text">${product.description}</p>
                             <p class="card-text"><strong>Price:</strong> ${product.price}</p>
-                            <p class="card-text"><strong>Category:</strong> ${product.category.name}</p>
+                            <p class="card-text"><strong>Category:</strong> ${product.categoryId}</p>
                         </div>
                     </div>
                 </div>
