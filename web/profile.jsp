@@ -27,13 +27,17 @@
 <body>
     <h1>Profile</h1>
 
-    <c:if test="${not empty updateSuccess}">
-        <p style="color:green;">Profile updated successfully!</p>
-    </c:if>
+    <c:if test="${updateSuccess != null}">
+    <c:choose>
+        <c:when test="${updateSuccess}">
+            <p style="color:green;">Profile updated successfully!</p>
+        </c:when>
+        <c:otherwise>
+            <p style="color:red;">Profile update failed. Please try again.</p>
+        </c:otherwise>
+    </c:choose>
+</c:if>
 
-    <c:if test="${not empty updateSuccess && !updateSuccess}">
-        <p style="color:red;">Profile update failed. Please try again.</p>
-    </c:if>
 
     <form method="post" action="ProfileServlet">
         <label>Name: </label>
@@ -44,6 +48,6 @@
         <input type="text" id="phoneNumber" name="phoneNumber" value="${profile.phoneNumber}" data-initial="${profile.phoneNumber}" required oninput="checkChanges()"><br>
         <button type="submit" id="saveButton" disabled>Update Profile</button>
     </form>
-    <a href="home.jsp">Back to Home</a>
+    <a href="home">Back to Home</a>
 </body>
 </html>

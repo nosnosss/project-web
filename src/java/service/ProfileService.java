@@ -28,4 +28,13 @@ public class ProfileService {
         }
         return false;
     }
+    
+    public boolean createProfile(Profile profile) {
+        try {
+            return profileDAO.createProfile(profile);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

@@ -20,58 +20,68 @@ public class ProfileServlet extends HttpServlet {
     }
 
     @Override
-protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    HttpSession session = request.getSession();
-    Integer userId = (Integer) session.getAttribute("userId");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Integer userId = (Integer) session.getAttribute("userId");
 
-    if (userId == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
-
-    Profile profile = profileService.getProfileByUserId(userId);
-    if (profile != null) {
-        request.setAttribute("profile", profile);
-        String updateSuccessParam = request.getParameter("updateSuccess");
-        if (updateSuccessParam != null) {
-            request.setAttribute("updateSuccess", Boolean.parseBoolean(updateSuccessParam));
+        if (userId == null) {
+            response.sendRedirect("login.jsp");
+            return;
         }
-        request.getRequestDispatcher("profile.jsp").forward(request, response);
-    } else {
-        response.sendRedirect("error.jsp");
-    }
-}
 
+        Profile profile = profileService.getProfileByUserId(userId);
+        if (profile == null) {
+            profile = new Profile();
+            profile.setUserId(userId);
+            profile.setName("");
+            profile.setAddress("");
+            profile.setPhoneNumber("");
+        }
+
+        request.setAttribute("profile", profile);
+        request.getRequestDispatcher("profile.jsp").forward(request, response);
+    }
 
     @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    HttpSession session = request.getSession();
-    Integer userId = (Integer) session.getAttribute("userId");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Integer userId = (Integer) session.getAttribute("userId");
 
-    if (userId == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
+        if (userId == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
 
-    String name = request.getParameter("name");
-    String address = request.getParameter("address");
-    String phoneNumber = request.getParameter("phoneNumber");
+        String name = request.getParameter("name");
+        String address = request.getParameter("address");
+        String phoneNumber = request.getParameter("phoneNumber");
 
-    Profile profile = new Profile();
-    profile.setUserId(userId);
-    profile.setName(name);
-    profile.setAddress(address);
-    profile.setPhoneNumber(phoneNumber);
+        Profile profile = profileService.getProfileByUserId(userId);
+        if (profile == null) {
+            profile = new Profile();
+            profile.setUserId(userId);
+            profile.setName(name);
+            profile.setAddress(address);
+            profile.setPhoneNumber(phoneNumber);
 
-    boolean updateSuccess = profileService.updateProfile(profile);
-    if (updateSuccess) {
-        response.sendRedirect("ProfileServlet?updateSuccess=true");
-    } else {
-        request.setAttribute("updateSuccess", false);
+            boolean createSuccess = profileService.createProfile(profile);
+            if (createSuccess) {
+                request.setAttribute("updateSuccess", true);
+            } else {
+                request.setAttribute("updateSuccess", false);
+            }
+        } else {
+            profile.setName(name);
+            profile.setAddress(address);
+            profile.setPhoneNumber(phoneNumber);
+
+            boolean updateSuccess = profileService.updateProfile(profile);
+            request.setAttribute("updateSuccess", updateSuccess);
+        }
+
+        request.setAttribute("profile", profile);
         request.getRequestDispatcher("profile.jsp").forward(request, response);
     }
 }
-}
-

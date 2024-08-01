@@ -38,4 +38,18 @@ public class ProfileDAO {
             return rowsAffected > 0;
         }
     }
+    
+    // Create profile
+    public boolean createProfile(Profile profile) throws SQLException {
+        String query = "INSERT INTO Profiles (user_id, name, address, phone_number) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, profile.getUserId());
+            stmt.setString(2, profile.getName());
+            stmt.setString(3, profile.getAddress());
+            stmt.setString(4, profile.getPhoneNumber());
+            int rowsInserted = stmt.executeUpdate();
+            return rowsInserted > 0;
+        }
+    }
 }
