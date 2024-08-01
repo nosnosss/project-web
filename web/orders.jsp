@@ -60,5 +60,6 @@
             <p>No orders found.</p>
         </c:if>
     <% } %>
+    <a href="home">Back to Home</a>
 </body>
 </html>

@@ -35,5 +35,6 @@
         <p>No items found for this order.</p>
     </c:if>
     <a href="OrderServlet?action=viewOrders">Back to Orders</a>
+    <a href="home">Back to Home</a>
 </body>
 </html>

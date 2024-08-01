@@ -19,6 +19,8 @@
                 </c:when>
                 <c:otherwise>
                     <a href="logout" class="btn btn-danger">Logout</a>
+                    <a href="orders.jsp" class="btn btn-info">View Orders</a>
+                    <a href="ProfileServlet" class="btn btn-warning">Update Profile</a>
                 </c:otherwise>
             </c:choose>
         </div>

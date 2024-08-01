@@ -30,5 +30,6 @@
             </div>
             <% } %>
         </div>
+        <a href="home">Back to Home</a>
     </body>
 </html>

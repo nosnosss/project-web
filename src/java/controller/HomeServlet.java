@@ -23,11 +23,13 @@ public class HomeServlet extends HttpServlet {
     private CategoryDao categoryDao;
     private ProductDao productDao;
 
+    @Override
     public void init() {
         categoryDao = new CategoryDao();
         productDao = new ProductDao();
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<Category> categories = null;
