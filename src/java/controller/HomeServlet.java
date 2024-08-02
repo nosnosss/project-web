@@ -12,7 +12,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
@@ -20,15 +23,23 @@ public class HomeServlet extends HttpServlet {
     private CategoryDao categoryDao;
     private ProductDao productDao;
 
+    @Override
     public void init() {
         categoryDao = new CategoryDao();
         productDao = new ProductDao();
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Category> categories = categoryDao.getAllCategories();
-        List<Product> products = productDao.getAllProducts();
+        List<Category> categories = null;
+        categories = categoryDao.getAllCategories();
+        List<Product> products = null;
+        try {
+            products = productDao.getAllProducts();
+        } catch (SQLException ex) {
+            Logger.getLogger(HomeServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         request.setAttribute("categories", categories);
         request.setAttribute("products", products);
